@@ -6,8 +6,8 @@ document.getElementById('check-btn').addEventListener('click', () => {
         return;
     }
 
-    // Cambia la ruta al servidor embebido de la API
-    fetch('http://localhost:8001/check', {
+    // Cambia la ruta al servidor en Render
+    fetch('https://relojchecadorbackend.onrender.com/check', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
