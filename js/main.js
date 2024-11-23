@@ -1,6 +1,7 @@
 document.getElementById('check-btn').addEventListener('click', () => {
-    const userId = document.getElementById('userId').value.trim(); // Validar y eliminar espacios
+    const userId = document.getElementById('userId').value.trim();
 
+    // Validar que el ID sea un número positivo
     if (!userId || isNaN(userId) || parseInt(userId) <= 0) {
         alert("Por favor, ingrese un ID válido. El ID debe ser un número positivo.");
         return;
@@ -15,12 +16,16 @@ document.getElementById('check-btn').addEventListener('click', () => {
         body: JSON.stringify({ userId })
     })
         .then(response => {
+            // Manejar errores HTTP
             if (!response.ok) {
-                throw new Error(`Error en la solicitud: ${response.status} - ${response.statusText}`);
+                return response.json().then(err => {
+                    throw new Error(err.message || `Error ${response.status}: ${response.statusText}`);
+                });
             }
             return response.json();
         })
         .then(data => {
+            // Mostrar mensaje del backend si la respuesta es exitosa
             if (data.error) {
                 alert(data.error);
             } else {
@@ -28,7 +33,8 @@ document.getElementById('check-btn').addEventListener('click', () => {
             }
         })
         .catch(error => {
+            // Manejo general de errores
             console.error('Error en la solicitud:', error);
-            alert("Ocurrió un problema al conectar con el servidor. Por favor, intente más tarde.");
+            alert(error.message || "Ocurrió un problema al conectar con el servidor. Por favor, intente más tarde.");
         });
 });
